@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 def atlas(URL:str):
-    r = requests.get(URL)
+    r = requests.get(URL, timeout=25)
     if r.status_code != 200:
         return f"Failed to request: {r.status_code}"
     else:
@@ -15,15 +15,13 @@ def spinal(content:str, url:str):
     table = soup.find("table")
     for td in table.find_all("td"):
         try:
-            link = td.find("a")
             href = link['href']
-            if link.text == 'Parent Directory':
-                print(f'{link.text} : {href}')
+            #verify_ext = lambda href: any(href.endswith(ext) or href.endswith(ext.upper()) for ext in exts)
+            if href[-1] != "/": # check the type
+                archives.append(f'{url}{href}')
             else:
-                #verify_ext = lambda href: any(href.endswith(ext) or href.endswith(ext.upper()) for ext in exts)
-                if href[-1] != "/": # check the type
-                    archives.append(f'{url}{href}')
-                else:
-                    paths.append(f'{url}{href}')
+                paths.append(f'{url}{href}')
         except Exception as err:
             None
+    return paths, archives
+
