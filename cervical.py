@@ -27,5 +27,3 @@ def spinal(content:str, url:str):
                     paths.append(f'{url}{href}')
         except Exception as err:
             None
-
-spinal(req("https://entropy.soldierx.com/~kayin/archive/"), "https://entropy.soldierx.com/~kayin/archive/")
